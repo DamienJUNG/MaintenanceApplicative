@@ -11,23 +11,18 @@ public class Game implements IGame {
 
    ArrayList<Player> players = new ArrayList<>();
    
-   Map<String, LinkedList<String>> categoriesQuestions = new HashMap<String, LinkedList<String>>();
-
-   LinkedList<String> popQuestions = new LinkedList<>();
-   LinkedList<String> scienceQuestions = new LinkedList<>();
-   LinkedList<String> sportsQuestions = new LinkedList<>();
-   LinkedList<String> rockQuestions = new LinkedList<>();
+   Map<Categories, LinkedList<String>> categoriesQuestions = new HashMap<>();
 
    int currentPlayer = 0;
    boolean isGettingOutOfPenaltyBox;
 
    public Game() {
       for (Categories categorie : Categories.values()) {
-         categoriesQuestions.put(categorie.name(), new LinkedList<String>());
+         categoriesQuestions.put(categorie, new LinkedList<>());
       }
       for (int i = 0; i < 50; i++) {
          for (Categories categorie : Categories.values()) {
-            categoriesQuestions.get(categorie.name()).addLast(categorie.name() + " Question " + i);
+            categoriesQuestions.get(categorie).addLast(categorie.name() + " Question " + i);
          }
       }
    }
@@ -91,17 +86,17 @@ public class Game implements IGame {
       System.out.println(categoriesQuestions.get(currentCategory()).removeFirst());
    }
 
-   private String currentCategory() {
+   private Categories currentCategory() {
       int playerPos = players.get(currentPlayer).getPosition();
       //1 >= places[currentPlayer] <= MAX_PLAYER_COUNT
       //Pop -> (1, 5, 9) 0, 4, 8
-      if ((playerPos - 1) % 4 == 0) return "Pop";
+      if ((playerPos - 1) % 4 == 0) return Categories.Pop;
       //Sports -> (3, 7, 11) 2, 6, 10
-      else if ((playerPos - 1) % 2 == 0) return "Sports";
+      else if ((playerPos - 1) % 2 == 0) return Categories.Sports;
       //Sciences -> (2, 6, 10) 0, 4, 8
-      else if ((playerPos - 2) % 4 == 0) return "Science";
+      else if ((playerPos - 2) % 4 == 0) return Categories.Science;
       //Rock -> (4, 8, 12)
-      else return "Rock";
+      else return Categories.Rock;
    }
 
    public boolean handleCorrectAnswer() {
