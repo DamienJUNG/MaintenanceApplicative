@@ -29,8 +29,8 @@ public class GameTest {
 		assertEquals(expectedOutput, actualOutput);
 	}
 
+	//@Disabled("enable back and set a particular seed to see the output")
 	@Test
-	@Disabled("enable back and set a particular seed to see the output")
 	public void oneSeed() {
 		testSeed(1, true);
 	}
