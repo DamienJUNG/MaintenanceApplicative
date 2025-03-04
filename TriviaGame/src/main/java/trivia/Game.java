@@ -1,13 +1,17 @@
 package trivia;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 // TODO REFACTOR ME
 public class Game implements IGame {
    public static final int MAX_PLAYER_COUNT = 6;
 
    ArrayList<Player> players = new ArrayList<>();
+   
+   Map<String, LinkedList<String>> categoriesQuestions = new HashMap<String, LinkedList<String>>();
 
    LinkedList<String> popQuestions = new LinkedList<>();
    LinkedList<String> scienceQuestions = new LinkedList<>();
@@ -18,17 +22,21 @@ public class Game implements IGame {
    boolean isGettingOutOfPenaltyBox;
 
    public Game() {
+      for (Categories categorie : Categories.values()) {
+         categoriesQuestions.put(categorie.name(), new LinkedList<String>());
+      }
       for (int i = 0; i < 50; i++) {
-         popQuestions.addLast("Pop Question " + i);
-         scienceQuestions.addLast(("Science Question " + i));
-         sportsQuestions.addLast(("Sports Question " + i));
-         rockQuestions.addLast(("Rock Question " + i));
+         for (Categories categorie : Categories.values()) {
+            categoriesQuestions.get(categorie.name()).addLast(categorie.name() + " Question " + i);
+         }
       }
    }
 
    public boolean add(String playerName) {
 
+      
       players.add(new Player(playerName));
+      
 
       System.out.println(playerName + " was added");
       System.out.println("They are player number " + numberOfPlayer());
@@ -80,24 +88,8 @@ public class Game implements IGame {
    }
 
    private void askQuestion() {
-      System.out.println(detectCategory(currentCategory()).removeFirst());
+      System.out.println(categoriesQuestions.get(currentCategory()).removeFirst());
    }
-
-   private LinkedList<String> detectCategory(String category) {
-       switch (category) {
-           case "Pop":
-               return popQuestions;
-           case "Science":
-               return scienceQuestions;
-           case "Sports":
-               return sportsQuestions;
-           case "Rock":
-               return rockQuestions;
-           default:
-               throw new IllegalArgumentException();
-       }
-   }
-
 
    private String currentCategory() {
       int playerPos = players.get(currentPlayer).getPosition();
@@ -150,7 +142,7 @@ public class Game implements IGame {
    }
 
    private void nextPlayer() {
-      currentPlayer++;
+currentPlayer++;
       if (currentPlayer == numberOfPlayer()) currentPlayer = 0;
    }
 
