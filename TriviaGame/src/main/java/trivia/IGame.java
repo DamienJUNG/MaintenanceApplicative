@@ -10,4 +10,7 @@ public interface IGame {
 
 	boolean wrongAnswer();
 
+	boolean isGameInProgress();
+
+	boolean isGameValid();
 }

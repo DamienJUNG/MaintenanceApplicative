@@ -160,6 +160,16 @@ public class GameOld implements IGame {
       return true;
    }
 
+   @Override
+   public boolean isGameInProgress() {
+      throw new UnsupportedOperationException("Not supported yet.");
+   }
+
+   @Override
+   public boolean isGameValid() {
+      throw new UnsupportedOperationException("Not supported yet.");
+   }
+
 
    private boolean didPlayerWin() {
       return !(purses[currentPlayer] == 6);

@@ -131,6 +131,16 @@ public class Game implements IGame {
       return true;
    }
 
+   @Override
+   public boolean isGameInProgress() {
+      throw new UnsupportedOperationException("Not supported yet.");
+   }
+
+   @Override
+   public boolean isGameValid() {
+      throw new UnsupportedOperationException("Not supported yet.");
+   }
+
    private void nextPlayer() {
       currentPlayer++;
       if (currentPlayer == numberOfPlayer()) currentPlayer = 0;
