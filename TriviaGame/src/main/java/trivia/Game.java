@@ -11,27 +11,25 @@ public class Game implements IGame {
 
    ArrayList<Player> players = new ArrayList<>();
    
-   Map<Categories, LinkedList<String>> categoriesQuestions = new HashMap<>();
+   Map<Categorie, LinkedList<String>> categoriesQuestions = new HashMap<>();
 
    int currentPlayer = 0;
    boolean isGettingOutOfPenaltyBox;
 
    public Game() {
-      for (Categories categorie : Categories.values()) {
+      for (Categorie categorie : Categorie.values()) {
          categoriesQuestions.put(categorie, new LinkedList<>());
       }
       for (int i = 0; i < 50; i++) {
-         for (Categories categorie : Categories.values()) {
-            categoriesQuestions.get(categorie).addLast(categorie.name() + " Question " + i);
+         for (Categorie categorie : Categorie.values()) {
+            categoriesQuestions.get(categorie).addLast(categorie.toString() + " Question " + i);
          }
       }
    }
 
    public boolean add(String playerName) {
-
       
       players.add(new Player(playerName));
-      
 
       System.out.println(playerName + " was added");
       System.out.println("They are player number " + numberOfPlayer());
@@ -86,17 +84,14 @@ public class Game implements IGame {
       System.out.println(categoriesQuestions.get(currentCategory()).removeFirst());
    }
 
-   private Categories currentCategory() {
+   private Categorie currentCategory() {
       int playerPos = players.get(currentPlayer).getPosition();
-      //1 >= places[currentPlayer] <= MAX_PLAYER_COUNT
-      //Pop -> (1, 5, 9) 0, 4, 8
-      if ((playerPos - 1) % 4 == 0) return Categories.Pop;
-      //Sports -> (3, 7, 11) 2, 6, 10
-      else if ((playerPos - 1) % 2 == 0) return Categories.Sports;
-      //Sciences -> (2, 6, 10) 0, 4, 8
-      else if ((playerPos - 2) % 4 == 0) return Categories.Science;
-      //Rock -> (4, 8, 12)
-      else return Categories.Rock;
+      for (int i = 0; i < Categorie.values().length; i++) {
+         if ((playerPos - i) % Categorie.values().length == 0) {
+            return Categorie.values()[i];
+         }
+      }
+      return null;
    }
 
    public boolean handleCorrectAnswer() {
@@ -137,7 +132,7 @@ public class Game implements IGame {
    }
 
    private void nextPlayer() {
-currentPlayer++;
+      currentPlayer++;
       if (currentPlayer == numberOfPlayer()) currentPlayer = 0;
    }
 
