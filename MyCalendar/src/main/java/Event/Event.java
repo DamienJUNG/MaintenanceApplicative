@@ -1,10 +1,10 @@
 package Event;
 
 public abstract class Event {
-    public TitreEvenement title;
-    public Proprietaire proprietaire;
-    public DateDebut dateDebut;
-    public DureeEvenement dureeEvenement;
+    protected final TitreEvenement title;
+    protected final Proprietaire proprietaire;
+    protected final DateDebut dateDebut;
+    protected final DureeEvenement dureeEvenement;
 
     public Event(TitreEvenement title, Proprietaire proprietaire, DateDebut dateDebut, DureeEvenement dureeEvenement) {
         this.title = title;
@@ -14,4 +14,20 @@ public abstract class Event {
     }
 
     public abstract String description();
+
+    public DateDebut getDateDebut() {
+        return dateDebut;
+    }
+
+    public DureeEvenement getDureeEvenement() {
+        return dureeEvenement;
+    }
+
+    public Proprietaire getProprietaire() {
+        return proprietaire;
+    }
+
+    public TitreEvenement getTitle() {
+        return title;
+    }
 }
