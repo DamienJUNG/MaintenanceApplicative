@@ -10,8 +10,4 @@ public class DateDebut {
     public LocalDateTime getDateDebut() {
         return dateDebut;
     }
-
-    public void setDateDebut(LocalDateTime dateDebut) {
-        this.dateDebut = dateDebut;
-    }
 }

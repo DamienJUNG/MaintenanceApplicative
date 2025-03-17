@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ParticipantList {
-    List<Participant> participants;
+    private final List<Participant> participants;
     public ParticipantList() {
         participants = new ArrayList<>();
     }
