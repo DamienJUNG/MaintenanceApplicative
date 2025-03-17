@@ -33,16 +33,22 @@ public class PlayGame {
          int roll = readRoll();
          aGame.roll(roll);
 
-         System.out.print(">> Was the answer correct? [y/n] ");
-         boolean correct = readYesNo();
-         if (correct) {
-            notAWinner = aGame.handleCorrectAnswer();
-         } else {
-            notAWinner = aGame.wrongAnswer();
-         }
+         notAWinner = playTurn(aGame, true);
 
       } while (notAWinner);
       System.out.println(">> Game won!");
+   }
+
+   private static boolean playTurn(IGame aGame, boolean secondChance) {
+      boolean notAWinner;
+      System.out.print(">> Was the answer correct? [y/n] ");
+      boolean correct = readYesNo();
+      if (correct) {
+         notAWinner = aGame.handleCorrectAnswer();
+      } else {
+         notAWinner = secondChance ? playTurn(aGame, false) : aGame.wrongAnswer();
+      }
+      return notAWinner;
    }
 
    private static boolean readYesNo() {
