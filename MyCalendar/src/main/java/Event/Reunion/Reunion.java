@@ -7,15 +7,17 @@ import Event.DateDebut;
 import Event.Event;
 
 public class Reunion extends Event {
-    private LieuReunion lieu;
-    private ParticipantList participantList;
+    private final LieuReunion lieu;
+    private final ParticipantList participantList;
 
     public Reunion(TitreEvenement title, Proprietaire proprietaire, DateDebut dateDebut, DureeEvenement dureeEvenement, LieuReunion lieu, ParticipantList participantList) {
         super(title, proprietaire, dateDebut, dureeEvenement);
+        this.lieu = lieu;
+        this.participantList = participantList;
     }
 
     @Override
     public String description() {
-        return "Réunion : " + title + " à " + lieu + " avec " + participantList.toString();
+        return "Réunion : "+title.getTitre()+ " à " + lieu.getNom() + " le "+dateDebut+" avec " + participantList.toString();
     }
 }

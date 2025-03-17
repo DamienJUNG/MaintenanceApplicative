@@ -7,7 +7,7 @@ import Event.DateDebut;
 import Event.Event;
 
 public class Periodique extends Event {
-    private Frequence frequence;
+    private final Frequence frequence;
 
     public Periodique(TitreEvenement title, Proprietaire proprietaire, DateDebut dateDebut, DureeEvenement dureeEvenement, Frequence frequence) {
         super(title, proprietaire, dateDebut, dureeEvenement);
@@ -16,14 +16,10 @@ public class Periodique extends Event {
 
     @Override
     public String description() {
-        return "Événement périodique : " + title + " tous les " + frequence.getJours() + " jours";
+        return "Événement périodique : " + title.getTitre() + " tous les " + frequence.getJours() + " jours";
     }
 
     public Frequence getFrequence() {
         return frequence;
-    }
-
-    public void setFrequence(Frequence frequence) {
-        this.frequence = frequence;
     }
 }

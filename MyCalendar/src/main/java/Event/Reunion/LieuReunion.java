@@ -1,11 +1,11 @@
 package Event.Reunion;
 
 public class LieuReunion {
-    private final String titre;
+    private final String nom;
     public LieuReunion(String titre) {
-        this.titre = titre;
+        this.nom = titre;
     }
-    public String getTitre() {
-        return titre;
+    public String getNom() {
+        return nom;
     }
 }

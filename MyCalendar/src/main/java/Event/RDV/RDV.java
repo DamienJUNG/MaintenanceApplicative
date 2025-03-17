@@ -6,6 +6,8 @@ import Event.TitreEvenement;
 import Event.DateDebut;
 import Event.Event;
 
+import java.time.LocalDateTime;
+
 public class RDV extends Event {
     public RDV(TitreEvenement title, Proprietaire proprietaire, DateDebut dateDebut, DureeEvenement dureeEvenement) {
         super(title, proprietaire, dateDebut, dureeEvenement);
@@ -13,6 +15,7 @@ public class RDV extends Event {
 
     @Override
     public String description() {
-        return "RDV : " + title + " à " + dateDebut.toString();
+        LocalDateTime date = dateDebut.getDateDebut();
+        return "RDV : " + title.getTitre() + " le "+ dateDebut;
     }
 }

@@ -3,6 +3,7 @@ package Event.Reunion;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.SplittableRandom;
 
 public class ParticipantList {
     private final List<Participant> participants;
@@ -33,6 +34,19 @@ public class ParticipantList {
 
     @Override
     public String toString() {
-        return Arrays.toString(participants.toArray());
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < participants.size(); i++) {
+            String participant = participants.get(i).getName();
+            if(i==participants.size()-1){
+                builder.append(participant);
+            }
+            else if(i==participants.size()-2) {
+                builder.append(participant).append(" et ");
+            }
+            else {
+                builder.append(participant).append(", ");
+            }
+        }
+        return builder.toString();
     }
 }

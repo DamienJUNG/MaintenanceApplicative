@@ -10,4 +10,9 @@ public class DateDebut {
     public LocalDateTime getDateDebut() {
         return dateDebut;
     }
+
+    @Override
+    public String toString() {
+        return dateDebut.getDayOfMonth()+" "+dateDebut.getMonth()+" "+dateDebut.getYear()+" à "+dateDebut.getHour()+"h"+dateDebut.getMinute();
+    }
 }
