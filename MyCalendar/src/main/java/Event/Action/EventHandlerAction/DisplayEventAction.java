@@ -1,7 +1,6 @@
 package Event.Action.EventHandlerAction;
 
 import CalendarManager.CalendarManager;
-import Event.Action.Action;
 import Event.Action.CalendarAction.*;
 import User.User;
 
@@ -27,7 +26,7 @@ public class DisplayEventAction extends EventAction {
     public boolean handle(User user) {
 
         Scanner scanner = new Scanner(System.in);
-        calendarActionList.display();
+        System.out.println(calendarActionList.display());
         System.out.print("Quelle est votre choix"+user.getUsername()+" ?");
 
         int command = Integer.parseInt(scanner.nextLine());
