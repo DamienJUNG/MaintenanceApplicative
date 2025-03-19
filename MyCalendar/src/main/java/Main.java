@@ -1,3 +1,8 @@
+import CalendarManager.CalendarManager;
+import Event.Action.CalendarAction.*;
+import Event.Action.UserAction.LogIn;
+import Event.Action.UserAction.SignIn;
+import Event.Action.UserAction.UserActionList;
 import Event.DateDebut;
 import Event.Event;
 
@@ -19,12 +24,25 @@ import User.UserManager;
 public class Main {
     public static void main(String[] args) {
 
-        UserManager userManager = new UserManager();
+        UserManager userManager = UserManager.getInstance();
 
         CalendarManager calendar = new CalendarManager();
+
+        UserActionList userActions = new UserActionList();
+        userActions.addAction(new LogIn());
+        userActions.addAction(new SignIn());
+
+        CalendarActionList calendarActionList = new CalendarActionList(calendar);
+        calendarActionList.addAction(new DisplayEveryEventAction());
+        calendarActionList.addAction(new DisplayMonthEventAction());
+        calendarActionList.addAction(new DisplayWeekEventAction());
+        calendarActionList.addAction(new DisplayDayEventAction());
+
         Scanner scanner = new Scanner(System.in);
         User utilisateur = null;
         boolean continuer = true;
+
+        int command;
 
         while (true) {
 
@@ -44,35 +62,10 @@ public class Main {
                 System.out.println(
                         "                                                                                  |___/");
 
-                System.out.println("1 - Se connecter");
-                System.out.println("2 - Créer un compte");
+                System.out.println(userActions.display());
                 System.out.println("Choix : ");
-
-                String username;
-                String password;
-                switch (scanner.nextLine()) {
-                    case "1":
-                        System.out.print("Nom d'utilisateur: ");
-                        username = scanner.nextLine();
-                        System.out.print("Mot de passe: ");
-                        password = scanner.nextLine();
-                        userManager.checkUser(new User(username,password));
-                        break;
-
-                    case "2":
-                        System.out.print("Nom d'utilisateur: ");
-                        username = scanner.nextLine();
-                        System.out.print("Mot de passe: ");
-                        password = scanner.nextLine();
-                        System.out.print("Répéter mot de passe: ");
-                        if (scanner.nextLine().equals(password)) {
-                            userManager.createUser(new User(username,password));
-                        } else {
-                            System.out.println("Les mots de passes ne correspondent pas...");
-                            utilisateur = null;
-                        }
-                        break;
-                }
+                command = Integer.parseInt(scanner.nextLine());
+                utilisateur = userActions.handle(command);
             }
 
             while (continuer && utilisateur != null) {
@@ -97,55 +90,8 @@ public class Main {
                         System.out.println("5 - Retour");
                         System.out.print("Votre choix : ");
 
-                        choix = scanner.nextLine();
-
-                        switch (choix) {
-                            case "1":
-                                calendar.afficherEvenements();
-                                break;
-
-                            case "2":
-                                System.out.print("Entrez l'année (AAAA) : ");
-                                int anneeMois = Integer.parseInt(scanner.nextLine());
-                                System.out.print("Entrez le mois (1-12) : ");
-                                int mois = Integer.parseInt(scanner.nextLine());
-
-                                LocalDateTime debutMois = LocalDateTime.of(anneeMois, mois, 1, 0, 0);
-                                LocalDateTime finMois = debutMois.plusMonths(1).minusSeconds(1);
-
-                                afficherListe(calendar.eventsDansPeriode(debutMois, finMois));
-                                break;
-
-                            case "3":
-                                System.out.print("Entrez l'année (AAAA) : ");
-                                int anneeSemaine = Integer.parseInt(scanner.nextLine());
-                                System.out.print("Entrez le numéro de semaine (1-52) : ");
-                                int semaine = Integer.parseInt(scanner.nextLine());
-
-                                LocalDateTime debutSemaine = LocalDateTime.now()
-                                        .withYear(anneeSemaine)
-                                        .with(WeekFields.of(Locale.FRANCE).weekOfYear(), semaine)
-                                        .with(WeekFields.of(Locale.FRANCE).dayOfWeek(), 1)
-                                        .withHour(0).withMinute(0);
-                                LocalDateTime finSemaine = debutSemaine.plusDays(7).minusSeconds(1);
-
-                                afficherListe(calendar.eventsDansPeriode(debutSemaine, finSemaine));
-                                break;
-
-                            case "4":
-                                System.out.print("Entrez l'année (AAAA) : ");
-                                int anneeJour = Integer.parseInt(scanner.nextLine());
-                                System.out.print("Entrez le mois (1-12) : ");
-                                int moisJour = Integer.parseInt(scanner.nextLine());
-                                System.out.print("Entrez le jour (1-31) : ");
-                                int jour = Integer.parseInt(scanner.nextLine());
-
-                                LocalDateTime debutJour = LocalDateTime.of(anneeJour, moisJour, jour, 0, 0);
-                                LocalDateTime finJour = debutJour.plusDays(1).minusSeconds(1);
-
-                                afficherListe(calendar.eventsDansPeriode(debutJour, finJour));
-                                break;
-                        }
+                        command = Integer.parseInt(scanner.nextLine());
+                        calendarActionList.handle(command);
                         break;
 
                     case "2":
@@ -155,10 +101,9 @@ public class Main {
                     case "3":
                         ajoutReunion(scanner, utilisateur.getUsername(), calendar);
                         break;
-
-                        case "4":
-                            ajoutPeriodique(scanner, calendar, utilisateur.getUsername());
-                            break;
+                    case "4":
+                        ajoutPeriodique(scanner, calendar, utilisateur.getUsername());
+                        break;
 
                     default:
                         System.out.println("Déconnexion ! Voulez-vous continuer ? (O/N)");

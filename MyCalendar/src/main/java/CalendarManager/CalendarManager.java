@@ -1,19 +1,13 @@
+package CalendarManager;
+
 import Event.Event;
-import Event.Periodique.Frequence;
 import Event.Periodique.Periodique;
-import Event.RDV.RDV;
-import Event.Reunion.LieuReunion;
-import Event.Reunion.ParticipantList;
-import Event.Reunion.Reunion;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import Event.DureeEvenement;
-import Event.TitreEvenement;
 import Event.DateDebut;
-import Event.Proprietaire;
 import Event.EventList;
 
 public class CalendarManager {

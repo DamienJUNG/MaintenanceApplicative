@@ -7,25 +7,14 @@ public class UserList {
     public UserList() {
         users = new ArrayList<>();
     }
-    public UserList(ArrayList<User> users) {
-        this.users = new ArrayList<>(users);
-    }
-    public ArrayList<User> getUsers() {
-        return users;
-    }
-    public void setUser(int index, User user) {
-        users.set(index, user);
-    }
+
     public void addUser(User user) {
         users.add(user);
     }
 
     public boolean contains(User user) {
-        return users.contains(user);
-    }
-    public boolean contains(String username) {
-        for (User user : users) {
-            if (user.getUsername().equals(username)) {
+        for (User currentUser : users) {
+            if(currentUser.getPassword().equals(user.getPassword()) && currentUser.getUsername().equals(user.getUsername())) {
                 return true;
             }
         }

@@ -1,4 +1,4 @@
-package Event.Action;
+package Event.Action.UserAction;
 
 import User.User;
 import User.UserManager;
@@ -6,11 +6,10 @@ import User.UserManager;
 import java.util.Scanner;
 
 public class LogIn extends UserAction {
-    private UserManager userManager;
-
-    @Override
-    public String display(int index) {
-        return index+" - Se connecter";
+    private final UserManager userManager;
+    public LogIn(){
+        userManager = UserManager.getInstance();
+        actionDescription = "Se connecter";
     }
 
     public User handle(){

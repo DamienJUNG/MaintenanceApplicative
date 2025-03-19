@@ -1,8 +1,11 @@
 package User;
 
 public class UserManager {
-    private static UserManager instance;
+    private static UserManager instance = null;
     private final UserList userList = new UserList();
+
+    private UserManager(){
+    }
 
     public static UserManager getInstance() {
         if(instance == null) {
