@@ -1,16 +1,16 @@
 package Event.Periodique;
 
 import Event.DureeEvenement;
-import Event.Proprietaire;
 import Event.TitreEvenement;
 import Event.DateDebut;
 import Event.Event;
+import User.User;
 
 public class Periodique extends Event {
     private final Frequence frequence;
 
-    public Periodique(TitreEvenement title, Proprietaire proprietaire, DateDebut dateDebut, DureeEvenement dureeEvenement, Frequence frequence) {
-        super(title, proprietaire, dateDebut, dureeEvenement);
+    public Periodique(TitreEvenement title, User owner, DateDebut dateDebut, DureeEvenement dureeEvenement, Frequence frequence) {
+        super(title, owner, dateDebut, dureeEvenement);
         this.frequence = frequence;
     }
 

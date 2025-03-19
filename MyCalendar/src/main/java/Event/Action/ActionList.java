@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.function.Function;
 
 public class ActionList<T extends Action, R> {
-    private final List<T> actionList;
-    private final Function<T, R> handler; // Fonction pour exécuter handle()
+    protected final List<T> actionList;
+    protected Function<T, R> handler; // Fonction pour exécuter handle()
 
     public ActionList(Function<T, R> handler) {
         this.actionList = new ArrayList<>();

@@ -4,7 +4,6 @@ import CalendarManager.CalendarManager;
 import Event.Action.Action;
 import Event.Event;
 
-import java.util.Calendar;
 import java.util.List;
 
 public abstract class CalendarAction extends Action {

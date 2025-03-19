@@ -1,14 +1,16 @@
 package Event;
 
+import User.User;
+
 public abstract class Event {
     protected final TitreEvenement title;
-    protected final Proprietaire proprietaire;
+    protected final User owner;
     protected final DateDebut dateDebut;
     protected final DureeEvenement dureeEvenement;
 
-    public Event(TitreEvenement title, Proprietaire proprietaire, DateDebut dateDebut, DureeEvenement dureeEvenement) {
+    public Event(TitreEvenement title, User owner, DateDebut dateDebut, DureeEvenement dureeEvenement) {
         this.title = title;
-        this.proprietaire = proprietaire;
+        this.owner = owner;
         this.dateDebut = dateDebut;
         this.dureeEvenement = dureeEvenement;
     }
@@ -23,8 +25,8 @@ public abstract class Event {
         return dureeEvenement;
     }
 
-    public Proprietaire getProprietaire() {
-        return proprietaire;
+    public User getOwner() {
+        return owner;
     }
 
     public TitreEvenement getTitle() {
