@@ -37,10 +37,30 @@ public class EventClass {
                     Arguments.of(new RDV(new TitreEvenement("Rendez-vous docteur"),new User("Damien",""),new DateDebut(LocalDateTime.of(2020,10,2,5,40)),null),"RDV : Rendez-vous docteur le 2 OCTOBER 2020 à 5h40"),
                     Arguments.of(new Reunion(new TitreEvenement("Soutenance de stage"),new User("Damien",""),new DateDebut(LocalDateTime.of(2020,10,2,5,40)),null,new LieuReunion("IUT CHARLEMAGNE"),new ParticipantList("Damien,Michel,Robert")),"Réunion : Soutenance de stage à IUT CHARLEMAGNE le 2 OCTOBER 2020 à 5h40 avec Damien, Michel et Robert"),
                     Arguments.of(new Periodique(new TitreEvenement("Ménage de l'appart"), new User("Damien",""),new DateDebut(LocalDateTime.of(2020,10,2,5,40)),null,new Frequence(3)),"Événement périodique : Ménage de l'appart tous les 3 jours"),
-                    Arguments.of(new Alarme(new TitreEvenement("Réveil"), new User("Damien",""),new DateDebut(LocalDateTime.of(2020,10,2,5,40)),null,new ActiveDays(WeekDay.MONDAY,WeekDay.SUNDAY)),"Alarme : Réveil actif MONDAY et SATURDAY")
+                    Arguments.of(new Alarme(new TitreEvenement("Réveil"), new User("Damien",""),new DateDebut(LocalDateTime.of(2020,10,2,5,40)),null,new ActiveDays(WeekDay.MONDAY,WeekDay.SUNDAY)),"Alarme : Réveil actif MONDAY, SUNDAY")
                     );
         }
 
+
+    }
+
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @Nested
+    class AlarmeType {
+        @ParameterizedTest
+        @MethodSource("providePrint")
+        public void shouldPrintCorrectDescription(Event event, String print) {
+            assertThat(event.description()).isEqualTo(print);
+        }
+
+        public Stream<Arguments> providePrint() {
+            return Stream.of(
+                    Arguments.of(new Alarme(new TitreEvenement("Réveil"), new User("Damien",""),new DateDebut(LocalDateTime.of(2020,10,2,5,40)),null,new ActiveDays()),"Alarme : Réveil inactif"),
+                    Arguments.of(new Alarme(new TitreEvenement("Réveil"), new User("Damien",""),new DateDebut(LocalDateTime.of(2020,10,2,5,40)),null,null),"Alarme : Réveil inactif"),
+                    Arguments.of(new Alarme(new TitreEvenement("Réveil"), new User("Damien",""),new DateDebut(LocalDateTime.of(2020,10,2,5,40)),null,new ActiveDays(WeekDay.MONDAY,WeekDay.SUNDAY)),"Alarme : Réveil actif MONDAY, SUNDAY"),
+                    Arguments.of(new Alarme(new TitreEvenement("Réveil"), new User("Damien",""),new DateDebut(LocalDateTime.of(2020,10,2,5,40)),null,new ActiveDays(WeekDay.MONDAY,WeekDay.TUESDAY,WeekDay.WEDNESDAY,WeekDay.THURSDAY,WeekDay.FRIDAY,WeekDay.SATURDAY,WeekDay.SUNDAY)),"Alarme : Réveil actif MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY")
+            );
+        }
 
     }
 }
