@@ -1,31 +1,15 @@
 import CalendarManager.CalendarManager;
-import Event.Action.CalendarAction.*;
 import Event.Action.EventHandlerAction.*;
 import Event.Action.UserAction.LogIn;
 import Event.Action.UserAction.SignIn;
 import Event.Action.UserAction.UserActionList;
-import Event.DateDebut;
-import Event.Event;
 
-import java.time.LocalDateTime;
-import java.time.temporal.WeekFields;
 import java.util.*;
 
-import Event.*;
-import Event.Periodique.Frequence;
-import Event.Periodique.Periodique;
-import Event.RDV.RDV;
-import Event.Reunion.LieuReunion;
-import Event.Reunion.Participant;
-import Event.Reunion.ParticipantList;
-import Event.Reunion.Reunion;
 import User.User;
-import User.UserManager;
 
 public class Main {
     public static void main(String[] args) {
-
-        UserManager userManager = UserManager.getInstance();
 
         CalendarManager calendar = new CalendarManager();
 

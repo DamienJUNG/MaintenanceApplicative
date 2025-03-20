@@ -2,6 +2,8 @@ package Event;
 
 import User.User;
 
+import java.time.LocalDateTime;
+
 public abstract class Event {
     private static int ID = 1;
     private final int id;
@@ -41,4 +43,15 @@ public abstract class Event {
         return id;
     }
 
+    public boolean isInPeriod(LocalDateTime debut, LocalDateTime fin) {
+        return dateDebut.getDateDebut().isAfter(debut) && dateDebut.getDateDebut().isBefore(fin);
+    }
+
+    public EventList occurencesInPeriod(LocalDateTime start, LocalDateTime end) {
+        EventList eventList = new EventList();
+        if(isInPeriod(start, end)) {
+            eventList.addEvent(this);
+        }
+        return eventList;
+    }
 }

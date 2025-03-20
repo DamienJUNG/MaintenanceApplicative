@@ -4,7 +4,10 @@ import Event.DureeEvenement;
 import Event.TitreEvenement;
 import Event.DateDebut;
 import Event.Event;
+import Event.EventList;
 import User.User;
+
+import java.time.LocalDateTime;
 
 public class Periodique extends Event {
     private final Frequence frequence;
@@ -21,5 +24,19 @@ public class Periodique extends Event {
 
     public Frequence getFrequence() {
         return frequence;
+    }
+
+    @Override
+    public EventList occurencesInPeriod(LocalDateTime start, LocalDateTime end) {
+        EventList events = new EventList();
+        LocalDateTime temp = getDateDebut().getDateDebut();
+        while (temp.isBefore(end)) {
+            if (!temp.isBefore(start)) {
+                events.addEvent(this);
+                break;
+            }
+            temp = temp.plusDays(getFrequence().getJours());
+        }
+        return events;
     }
 }

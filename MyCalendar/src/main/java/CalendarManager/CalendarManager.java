@@ -4,10 +4,7 @@ import Event.Event;
 import Event.Periodique.Periodique;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import Event.DateDebut;
 import Event.EventList;
 
 public class CalendarManager {
@@ -22,27 +19,7 @@ public class CalendarManager {
     }
 
     public EventList eventsDansPeriode(LocalDateTime debut, LocalDateTime fin) {
-        EventList result = new EventList();
-
-        for (int i=0;i< events.size();i++) {
-            Event e = events.get(i);
-            if (e instanceof Periodique periodique) {
-                LocalDateTime temp = periodique.getDateDebut().getDateDebut();
-                while (temp.isBefore(fin)) {
-                    if (!temp.isBefore(debut)) {
-                        result.addEvent(e);
-                        break;
-                    }
-                    temp = temp.plusDays(periodique.getFrequence().getJours());
-                }
-            } else {
-                DateDebut dateDebut = e.getDateDebut();
-                if (!(dateDebut.getDateDebut().isBefore(debut)) && !( dateDebut.getDateDebut().isAfter(fin))) {
-                    result.addEvent(e);
-                }
-            }
-        }
-        return result;
+        return events.eventsDansPeriode(debut, fin);
     }
 
     public boolean conflit(Event e1, Event e2) {
