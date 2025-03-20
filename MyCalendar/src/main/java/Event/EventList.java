@@ -17,7 +17,12 @@ public class EventList {
     }
 
     public void removeEventById(int id) {
-
+        for (int i = 0; i < events.size(); i++) {
+            if (events.get(i).getId() == id) {
+                events.remove(i);
+                return;
+            }
+        }
     }
 
     public String displayEvents() {
