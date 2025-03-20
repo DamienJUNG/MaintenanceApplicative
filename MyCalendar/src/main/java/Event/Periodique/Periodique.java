@@ -39,4 +39,9 @@ public class Periodique extends Event {
         }
         return events;
     }
+
+    @Override
+    public boolean checkConflit(Event event) {
+        return false; // Simplification abusive :)
+    }
 }

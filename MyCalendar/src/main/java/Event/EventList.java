@@ -1,5 +1,7 @@
 package Event;
 
+import Event.Periodique.Periodique;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,5 +53,14 @@ public class EventList {
             }
         }
         return eventList;
+    }
+
+    public boolean checkConlifts(Event event) {
+        for (Event e : events) {
+            if(e.checkConflit(event)){
+                return false;
+            }
+        }
+        return true;
     }
 }

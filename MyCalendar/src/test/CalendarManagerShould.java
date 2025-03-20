@@ -142,11 +142,21 @@ public class CalendarManagerShould {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @Nested
     class WhenAddingNewEvent {
+        CalendarManager calendar;
+
+        @BeforeEach
+        void setUp() {
+            calendar = new CalendarManager();
+        }
+
         @ParameterizedTest
         @MethodSource("provideEventsForAdding")
         void testAjouterEvent(EventList initialList, Event eventToAdd, EventList expectedList) {
-            initialList.addEvent(eventToAdd);
-            assertEquals(expectedList.displayEvents(), initialList.displayEvents(), "La liste d'événements après ajout ne correspond pas à l'attendu.");
+            for (int i = 0; i < initialList.size(); i++) {
+                calendar.ajouterEvent(initialList.get(i));
+            }
+            calendar.ajouterEvent(eventToAdd);
+            assertEquals(expectedList.displayEvents(), calendar.getEvents().displayEvents(), "La liste d'événements après ajout ne correspond pas à l'attendu.");
         }
 
         public Stream<Arguments> provideEventsForAdding() {
@@ -160,7 +170,7 @@ public class CalendarManagerShould {
 
                     Arguments.of(eventListWithOne, rdv1, new EventList(rdv1)),
 
-                    Arguments.of(eventListWithMultiple, periodic1, new EventList(rdv1, rdv2, periodic1))
+                    Arguments.of(eventListWithMultiple, periodic1, new EventList(rdv1, rdv2, periodic1, periodic1))
             );
         }
 

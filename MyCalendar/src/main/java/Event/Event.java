@@ -54,4 +54,11 @@ public abstract class Event {
         }
         return eventList;
     }
+
+    public boolean checkConflit(Event event) {
+        LocalDateTime fin1 = getDateDebut().getDateDebut().plusMinutes(getDureeEvenement().getDuree());
+        LocalDateTime fin2 = event.getDateDebut().getDateDebut().plusMinutes(event.getDureeEvenement().getDuree());
+
+        return getDateDebut().getDateDebut().isBefore(fin2) && fin1.isAfter(event.getDateDebut().getDateDebut());
+    }
 }
