@@ -21,27 +21,27 @@ public class CalendarManager {
         events.addEvent(event);
     }
 
-    public List<Event> eventsDansPeriode(LocalDateTime debut, LocalDateTime fin) {
-        List<Event> result = new ArrayList<>();
+    public EventList eventsDansPeriode(LocalDateTime debut, LocalDateTime fin) {
+        EventList result = new EventList();
 
-//        for (Event e : events.getEvents()) {
-//            if (e instanceof Periodique) {
-//                Periodique periodique = (Periodique) e;
-//                LocalDateTime temp = periodique.getDateDebut().getDateDebut();
-//                while (temp.isBefore(fin)) {
-//                    if (!temp.isBefore(debut)) {
-//                        result.add(e);
-//                        break;
-//                    }
-//                    temp = temp.plusDays(periodique.getFrequence().getJours());
-//                }
-//            } else {
-//                DateDebut dateDebut = e.getDateDebut();
-//                if (!(dateDebut.getDateDebut().isBefore(debut)) && !( dateDebut.getDateDebut().isAfter(fin))) {
-//                    result.add(e);
-//                }
-//            }
-//        }
+        for (int i=0;i< events.size();i++) {
+            Event e = events.get(i);
+            if (e instanceof Periodique periodique) {
+                LocalDateTime temp = periodique.getDateDebut().getDateDebut();
+                while (temp.isBefore(fin)) {
+                    if (!temp.isBefore(debut)) {
+                        result.addEvent(e);
+                        break;
+                    }
+                    temp = temp.plusDays(periodique.getFrequence().getJours());
+                }
+            } else {
+                DateDebut dateDebut = e.getDateDebut();
+                if (!(dateDebut.getDateDebut().isBefore(debut)) && !( dateDebut.getDateDebut().isAfter(fin))) {
+                    result.addEvent(e);
+                }
+            }
+        }
         return result;
     }
 

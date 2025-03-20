@@ -1,3 +1,4 @@
+import CalendarManager.CalendarManager;
 import Event.Event;
 import Event.EventList;
 import Event.Periodique.Frequence;
@@ -13,31 +14,62 @@ import Event.Reunion.ParticipantList;
 import Event.Reunion.Reunion;
 import Event.TitreEvenement;
 import User.User;
-import org.assertj.core.util.Arrays;
 import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CalendarManagerShould {
 
+    @BeforeAll
+    static void setUp() {
+        User bob = new User("Bob", "bob@gmail.com");
+
+        DateDebut dateDebut1 = new DateDebut(LocalDateTime.of(2000, 12, 5, 5, 5, 5));
+        DateDebut dateDebut2 = new DateDebut(LocalDateTime.of(2001, 6, 10, 10, 10, 10));
+        DureeEvenement dureeEvenement = new DureeEvenement(30);
+
+        rdv1 = new RDV(new TitreEvenement("Rendez-vous stage"), bob, dateDebut1, dureeEvenement);
+        rdv2 = new RDV(new TitreEvenement("Rendez-vous plage"), bob, dateDebut2, dureeEvenement);
+
+        periodic1 = new Periodique(new TitreEvenement("Nettoyage appart"), bob, dateDebut1, dureeEvenement, new Frequence(15));
+        periodic2 = new Periodique(new TitreEvenement("Faire les courses"), bob, dateDebut1, dureeEvenement, new Frequence(3));
+
+        reunion1 = new Reunion(new TitreEvenement("Soutenance de stage"), bob, dateDebut1, dureeEvenement, new LieuReunion("IUT"), new ParticipantList("Michel, Robert"));
+        reunion2 = new Reunion(new TitreEvenement("Réunion d'information"), bob, dateDebut2, dureeEvenement, new LieuReunion("IUT"), new ParticipantList("Tibère, Evan"));
+
+        alarme1 = new Alarme(new TitreEvenement("Se réveiller"), bob, dateDebut1, dureeEvenement, new ActiveDays(WeekDay.SATURDAY));
+        alarme2 = new Alarme(new TitreEvenement("Ne pas travailler"), bob, dateDebut1, dureeEvenement, new ActiveDays(WeekDay.SATURDAY, WeekDay.SUNDAY, WeekDay.MONDAY, WeekDay.FRIDAY, WeekDay.WEDNESDAY));
+
+    }
+
+    static Event rdv1;
+    static Event rdv2;
+    static Event periodic1;
+    static Event periodic2;
+    static Event reunion1;
+    static Event reunion2;
+    static Event alarme1;
+    static Event alarme2;
+
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @Nested
-    class WhenUserIsConnected {
+    class WhenRemovingEvents {
         @ParameterizedTest
         @MethodSource("provideEventList")
-        public void removeEventFromList(EventList eventList, List<Integer> eventToRemove, EventList finalList){
+        public void returnCorrectList(EventList eventList, List<Integer> eventToRemove, EventList finalList){
             for(Integer i : eventToRemove){
                 eventList.removeEventById(i);
             }
@@ -47,24 +79,6 @@ public class CalendarManagerShould {
         }
 
         public Stream<Arguments> provideEventList() {
-            User bob = new User("Bob","bob@gmail.com");
-            DateDebut dateDebut = new DateDebut(LocalDateTime.of(2000,12,5,5,5,5));
-            DureeEvenement dureeEvenement = new DureeEvenement(30);
-            // 1 - 2
-            Event rdv1 = new RDV(new TitreEvenement("Rendez-vous stage"),bob,dateDebut,dureeEvenement);
-            Event rdv2 = new RDV(new TitreEvenement("Rendez-vous plage"),bob,dateDebut,dureeEvenement);
-
-            // 3 - 4
-            Event periodic1 = new Periodique(new TitreEvenement("Nettoyage appart"),bob,dateDebut,dureeEvenement,new Frequence(120));
-            Event periodic2 = new Periodique(new TitreEvenement("Faire les courses"),bob,dateDebut,dureeEvenement,new Frequence(2));
-
-            // 5 - 6
-            Event reunion1 = new Reunion(new TitreEvenement("Soutenance de stage"),bob,dateDebut,dureeEvenement,new LieuReunion("IUT"),new ParticipantList("Michel, Robert"));
-            Event reunion2 = new Reunion(new TitreEvenement("Réunion d'information"),bob,dateDebut,dureeEvenement,new LieuReunion("IUT"),new ParticipantList("Tibère, Evan"));
-
-            // 7 - 8
-            Event alarme1 = new Alarme(new TitreEvenement("Se réveiller"),bob,dateDebut,dureeEvenement,new ActiveDays(WeekDay.SATURDAY));
-            Event alarme2 = new Alarme(new TitreEvenement("Ne pas travailler"),bob,dateDebut,dureeEvenement,new ActiveDays(WeekDay.SATURDAY,WeekDay.SUNDAY,WeekDay.MONDAY,WeekDay.FRIDAY,WeekDay.WEDNESDAY));
 
             return Stream.of(
                     Arguments.of(new EventList(rdv1,rdv2), Lists.list(1,2),new EventList()),
@@ -77,5 +91,56 @@ public class CalendarManagerShould {
             );
         }
     }
+
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    @Nested
+    class WhenCheckingEventInsidePeriodics {
+        
+        CalendarManager calendar;
+
+        @BeforeEach
+        void setUp() {
+            calendar = new CalendarManager();
+        }
+
+        @ParameterizedTest
+        @MethodSource("providePeriodsForEventFiltering")
+        void testEventsDansPeriode(EventList eventList, LocalDateTime debut, LocalDateTime fin, EventList expected) {
+            for (int i = 0; i < eventList.size(); i++) {
+                calendar.ajouterEvent(eventList.get(i));
+            }
+            EventList result = calendar.eventsDansPeriode(debut, fin);
+
+            assertThat(result.displayEvents()).isEqualTo(expected.displayEvents());
+        }
+
+
+        Stream<Arguments> providePeriodsForEventFiltering() {
+
+            LocalDateTime startOfDay = LocalDateTime.of(2000, 12, 5, 0, 0);
+            LocalDateTime endOfDay = startOfDay.plusDays(1);
+
+            LocalDateTime startOfMonth = startOfDay;
+            LocalDateTime endOfMonth = startOfMonth.plusMonths(1);
+
+            LocalDateTime startOfYear = startOfDay;
+            LocalDateTime endOfYear = startOfYear.plusYears(1);
+
+            EventList eventList = new EventList(rdv1, rdv2, periodic1, periodic2, reunion1, reunion2, alarme1, alarme2);
+
+            return Stream.of(
+                    Arguments.of(eventList, startOfDay, endOfDay,
+                            new EventList(rdv1,periodic1,periodic2,reunion1, alarme1, alarme2)),
+
+                    Arguments.of(eventList, startOfMonth, endOfMonth,
+                            new EventList(rdv1, periodic1, periodic2, reunion1, alarme1, alarme2)),
+
+                    Arguments.of(eventList, startOfYear, endOfYear,
+                            new EventList(rdv1,rdv2, periodic1, periodic2, reunion1,reunion2, alarme1, alarme2))
+            );
+        }
+
+    }
+
 
 }
