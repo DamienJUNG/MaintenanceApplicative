@@ -3,6 +3,8 @@ package Event;
 import User.User;
 
 public abstract class Event {
+    private static int ID = 1;
+    private final int id;
     protected final TitreEvenement title;
     protected final User owner;
     protected final DateDebut dateDebut;
@@ -13,6 +15,8 @@ public abstract class Event {
         this.owner = owner;
         this.dateDebut = dateDebut;
         this.dureeEvenement = dureeEvenement;
+        id = ID;
+        ID++;
     }
 
     public abstract String description();
@@ -32,4 +36,9 @@ public abstract class Event {
     public TitreEvenement getTitle() {
         return title;
     }
+
+    public int getId() {
+        return id;
+    }
+
 }

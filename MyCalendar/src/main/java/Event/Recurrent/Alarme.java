@@ -20,7 +20,7 @@ public class Alarme extends Event {
     @Override
     public String description() {
         StringBuilder builder = new StringBuilder();
-        builder.append("Alarme : ").append(getTitle().getTitre());
+        builder.append(getId()).append(" - Alarme : ").append(getTitle().getTitre());
         if(activeDays==null || activeDays.getActiveDays().isEmpty()){
             builder.append(" inactif");
         }

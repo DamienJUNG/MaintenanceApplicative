@@ -38,6 +38,7 @@ public class Main {
         eventActions.addAction(new AddRDVEventAction(calendar));
         eventActions.addAction(new AddReunionEventAction(calendar));
         eventActions.addAction(new AddPeriodique(calendar));
+        eventActions.addAction(new RemoveEvent(calendar));
         eventActions.addAction(new LogOutEventAction(calendar));
 
         Scanner scanner = new Scanner(System.in);

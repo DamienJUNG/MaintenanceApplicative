@@ -15,7 +15,6 @@ public class RDV extends Event {
 
     @Override
     public String description() {
-        LocalDateTime date = dateDebut.getDateDebut();
-        return "RDV : " + title.getTitre() + " le "+ dateDebut;
+        return getId()+" - RDV : " + title.getTitre() + " le "+ dateDebut;
     }
 }

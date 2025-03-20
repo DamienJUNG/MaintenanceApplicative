@@ -13,7 +13,7 @@ public class ParticipantList {
     public ParticipantList(String participants) {
         this.participants = new ArrayList<>();
         for (String participant : participants.split(",")) {
-            this.participants.add(new Participant(participant));
+            this.participants.add(new Participant(participant.trim()));
         }
     }
     public void addParticipant(Participant participant) {

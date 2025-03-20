@@ -24,24 +24,24 @@ public class CalendarManager {
     public List<Event> eventsDansPeriode(LocalDateTime debut, LocalDateTime fin) {
         List<Event> result = new ArrayList<>();
 
-        for (Event e : events.getEvents()) {
-            if (e instanceof Periodique) {
-                Periodique periodique = (Periodique) e;
-                LocalDateTime temp = periodique.getDateDebut().getDateDebut();
-                while (temp.isBefore(fin)) {
-                    if (!temp.isBefore(debut)) {
-                        result.add(e);
-                        break;
-                    }
-                    temp = temp.plusDays(periodique.getFrequence().getJours());
-                }
-            } else {
-                DateDebut dateDebut = e.getDateDebut();
-                if (!(dateDebut.getDateDebut().isBefore(debut)) && !( dateDebut.getDateDebut().isAfter(fin))) {
-                    result.add(e);
-                }
-            }
-        }
+//        for (Event e : events.getEvents()) {
+//            if (e instanceof Periodique) {
+//                Periodique periodique = (Periodique) e;
+//                LocalDateTime temp = periodique.getDateDebut().getDateDebut();
+//                while (temp.isBefore(fin)) {
+//                    if (!temp.isBefore(debut)) {
+//                        result.add(e);
+//                        break;
+//                    }
+//                    temp = temp.plusDays(periodique.getFrequence().getJours());
+//                }
+//            } else {
+//                DateDebut dateDebut = e.getDateDebut();
+//                if (!(dateDebut.getDateDebut().isBefore(debut)) && !( dateDebut.getDateDebut().isAfter(fin))) {
+//                    result.add(e);
+//                }
+//            }
+//        }
         return result;
     }
 
@@ -60,8 +60,10 @@ public class CalendarManager {
     }
 
     public void afficherEvenements() {
-        for (Event e : events.getEvents()) {
-            System.out.println(e.description());
-        }
+        System.out.println(events.displayEvents());
+    }
+
+    public void supprimerEvenement(int id) {
+        events.removeEventById(id);
     }
 }
