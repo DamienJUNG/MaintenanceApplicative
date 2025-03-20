@@ -60,7 +60,7 @@ Le calendrier permet d'ajouter différents types d'événements, notamment :
 
 ## ⚙️ Exigences fonctionnelles à implémenter :
 1) Ajouter un nouveau type d'événement au calendrier. ✅
-2) Obtenir la liste des événements pour une période donnée.
+2) Obtenir la liste des événements pour une période donnée. ✅
 3) Détecter automatiquement les conflits entre événements (chevauchement horaire).
 4) Générer une description spécifique à chaque type d'événement. ✅
 5) Pouvoir supprimer un événement par son identifiant métier (ajouter un EventId). ✅
