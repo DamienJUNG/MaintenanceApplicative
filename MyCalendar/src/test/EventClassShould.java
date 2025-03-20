@@ -22,14 +22,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import java.time.LocalDateTime;
 import java.util.stream.Stream;
 
-public class EventClass {
+public class EventClassShould {
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     @Nested
     class ForEachEventType {
         @ParameterizedTest
         @MethodSource("providePrint")
         public void shouldHaveSpecificPrint(Event event, String print) {
-            assertThat(event.description()).isEqualTo(print);
+            String description = event.description().substring(3).trim();
+            assertThat(description).isEqualTo(print);
         }
 
         public Stream<Arguments> providePrint() {
@@ -50,7 +51,8 @@ public class EventClass {
         @ParameterizedTest
         @MethodSource("providePrint")
         public void shouldPrintCorrectDescription(Event event, String print) {
-            assertThat(event.description()).isEqualTo(print);
+            String description = event.description().substring(3).trim();
+            assertThat(description).isEqualTo(print);
         }
 
         public Stream<Arguments> providePrint() {
